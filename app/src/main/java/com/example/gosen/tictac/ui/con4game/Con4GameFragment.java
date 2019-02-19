@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2.ui.con4game;
+package com.example.gosen.tictac.ui.con4game;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.gosen.connect4_2.R;
+import com.example.gosen.tictac.R;
 
 public class Con4GameFragment extends Fragment {
 
@@ -23,7 +23,7 @@ public class Con4GameFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.con4_game_fragment, container, false);
+        return inflater.inflate(R.layout.tictac_game_fragment, container, false);
     }
 
     @Override

@@ -1,17 +1,15 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.gosen.connect4_2.ui.con4game.Con4GameFragment;
+import com.example.gosen.tictac.ui.con4game.Con4GameFragment;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -19,12 +17,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Con4GameActivity extends AppCompatActivity implements Observer {
+public class TicTacGameActivity extends AppCompatActivity implements Observer {
+
 
     /**
      * The board manager.
      */
-    private Con4BoardManager boardManager;
+    private TicTacBoardManager boardManager;
 
     /**
      * The buttons to display.
@@ -39,7 +38,7 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
     /**
      * The GridView of the Game
      */
-    private Con4GridView gridView;
+    private TicTacGridView gridView;
 
     /**
      * ArrayList where the parts of the image are going to be stored.
@@ -52,7 +51,7 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
      * @return whether the Board type is set to Image Tile
      */
     private boolean isImage() {
-        return Con4Board.getType().equals("Image tiles");
+        return TicTacBoard.getType().equals("Image tiles");
     }
 
     /**
@@ -61,7 +60,7 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
      */
     public void display() {
         updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(markerButtons, columnWidth, columnHeight));
+        gridView.setAdapter(new TicTacCustomAdapter(markerButtons, columnWidth, columnHeight));
 
         /*//autosave
         saveToFile(StartingActivity.SAVE_FILENAME);
@@ -87,7 +86,7 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
 
     //@Override
     public void update(Observable o, Object arg) {
-        System.out.println("Con4GameActivity.update()==========");
+        System.out.println("TicTacGameActivity.update()==========");
         display();
     }
 
@@ -97,10 +96,10 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
      * @param context the context
      */
     private void createTileButtons(Context context) {
-        Con4Board board = boardManager.getBoard();
+        TicTacBoard board = boardManager.getBoard();
         markerButtons = new ArrayList<>();
-        for (int row = 0; row < Con4Board.NUM_ROWS; row++) {
-            for (int col = 0; col < Con4Board.NUM_COLS; col++) {
+        for (int row = 0; row < TicTacBoard.NUM_ROWS; row++) {
+            for (int col = 0; col < TicTacBoard.NUM_COLS; col++) {
                 Button tmp = new Button(context);
                 System.out.println("Add ROW: " + row + "  COL: " + col);
                 tmp.setBackgroundResource(board.getMarker(row, col).getBackground());
@@ -113,11 +112,11 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
-        Con4Board board = boardManager.getBoard();
+        TicTacBoard board = boardManager.getBoard();
         int nextPos = 0;
         for (Button b : markerButtons) {
-            int row = nextPos / Con4Board.NUM_COLS;
-            int col = nextPos % Con4Board.NUM_COLS;
+            int row = nextPos / TicTacBoard.NUM_COLS;
+            int col = nextPos % TicTacBoard.NUM_COLS;
             System.out.println("ROW: " + row + "  COL: " + col);
             b.setBackgroundResource(board.getMarker(row, col).getBackground());
             nextPos++;
@@ -131,21 +130,41 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new Con4BoardManager();
-        setContentView(R.layout.con4_game_activity);
-        if (savedInstanceState == null) {
+        Bundle b = getIntent().getExtras();
+        int gametype = -1; // or other values
+        int depth = -1;
+        if(b != null) {
+            gametype = b.getInt("gametype");
+            depth = b.getInt("depth");
+        }
+        if (gametype == -1) {
+            //Toast.makeText(getApplicationContext(), "Invalid game type", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (gametype == TicTacMainActivity.PLAYER_TO_PLAYER) {
+            //PLAYER TO PLAYER CASE
+            boardManager = new TicTacBoardManager(new TicTacEmptyStrategy(depth));
+        } else if (gametype == TicTacMainActivity.PLAYER_TO_RANDOM) {
+            //PLAYER TO RANDOM AI CASE
+            boardManager = new TicTacBoardManager(new TicTacRandomStrategy(depth));
+        } else if (gametype == TicTacMainActivity.PLAYER_TO_AI) {
+            //PLAYER TO MINIMAX AI CASE
+            boardManager = new TicTacBoardManager(new TicTacMinimaxStrategy(depth));
+        }
+
+        setContentView(R.layout.tictac_game_activity);
+        /*if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, Con4GameFragment.newInstance())
                     .commitNow();
-        }
+        }*/
 
         createTileButtons(this);
-        // set to con4_game_activity
-        setContentView(R.layout.con4_game_activity);
+        // set to tictac_game_activity
+        setContentView(R.layout.tictac_game_activity);
         // Add View to activity
         gridView = findViewById(R.id.gridView);
         gridView.setBoardManager(boardManager);
-        gridView.setNumColumns(Con4Board.NUM_COLS);
+        gridView.setNumColumns(TicTacBoard.NUM_COLS);
         boardManager.getBoard().addObserver(this);
 
         // Observer sets up desired dimensions as well as calls our display function
@@ -158,8 +177,8 @@ public class Con4GameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / Con4Board.NUM_COLS;
-                        columnHeight = displayHeight / Con4Board.NUM_ROWS;
+                        columnWidth = displayWidth / TicTacBoard.NUM_COLS;
+                        columnHeight = displayHeight / TicTacBoard.NUM_ROWS;
 
                         display();
                     }

@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 /*
 Taken from:
@@ -16,11 +16,11 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends BaseAdapter {
+public class TicTacCustomAdapter extends BaseAdapter {
     private ArrayList<Button> mButtons;
     private int mColumnWidth, mColumnHeight;
 
-    CustomAdapter(ArrayList<Button> buttons, int columnWidth, int columnHeight) {
+    TicTacCustomAdapter(ArrayList<Button> buttons, int columnWidth, int columnHeight) {
         mButtons = buttons;
         mColumnWidth = columnWidth;
         mColumnHeight = columnHeight;

@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 /*
 Adapted from:
@@ -15,46 +15,46 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.GridView;
 
-public class Con4GridView extends GridView {
+public class TicTacGridView extends GridView {
     public static final int SWIPE_MIN_DISTANCE = 100;
     public static final int SWIPE_MAX_OFF_PATH = 100;
     public static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private GestureDetector gDetector;
-    private MovementController mController;
+    private TicTacMovementController mController;
     private boolean mFlingConfirmed = false;
     private float mTouchX;
     private float mTouchY;
-    private Con4BoardManager boardManager;
+    private TicTacBoardManager boardManager;
 
-    public Con4GridView(Context context) {
+    public TicTacGridView(Context context) {
         super(context);
         init(context);
     }
 
-    public Con4GridView(Context context, AttributeSet attrs) {
+    public TicTacGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public Con4GridView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TicTacGridView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) // API 21
-    public Con4GridView(Context context, AttributeSet attrs, int defStyleAttr,
-                        int defStyleRes) {
+    public TicTacGridView(Context context, AttributeSet attrs, int defStyleAttr,
+                          int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
 
     private void init(final Context context) {
-        mController = new MovementController();
+        mController = new TicTacMovementController();
         gDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent event) {
-                int position = Con4GridView.this.pointToPosition
+                int position = TicTacGridView.this.pointToPosition
                         (Math.round(event.getX()), Math.round(event.getY()));
 
                 mController.processTapMovement(context, position);
@@ -102,7 +102,7 @@ public class Con4GridView extends GridView {
     }
 
 
-    public void setBoardManager(Con4BoardManager boardManager) {
+    public void setBoardManager(TicTacBoardManager boardManager) {
         this.boardManager = boardManager;
         mController.setBoardManager(boardManager);
     }

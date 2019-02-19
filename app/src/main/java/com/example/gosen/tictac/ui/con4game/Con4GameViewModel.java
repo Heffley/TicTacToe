@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2.ui.con4game;
+package com.example.gosen.tictac.ui.con4game;
 
 import android.arch.lifecycle.ViewModel;
 

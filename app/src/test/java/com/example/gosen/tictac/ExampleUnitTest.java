@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 import org.junit.Test;
 

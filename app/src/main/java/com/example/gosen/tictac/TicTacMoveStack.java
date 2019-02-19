@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * The Stack that contains the previous moves with the most recent moves on the top
  */
-public class MoveStack implements Serializable {
+public class TicTacMoveStack implements Serializable {
     /**
      Contents of the stack. Each Item should be a Integer[] in the form {row1, col1, row2, col2}
      */
@@ -20,7 +20,7 @@ public class MoveStack implements Serializable {
      * The constuctor; Defaults the number of undos to be 3, and the contents of the
      * stack to be an empty arraylist. (Since no moves have taken place yet.)
      */
-    MoveStack() {
+    TicTacMoveStack() {
         NUM_UNDOS = 3;
         this.contents = new ArrayList<>();
     }

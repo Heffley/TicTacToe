@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.gosen.connect4_2", appContext.getPackageName());
+        assertEquals("com.example.gosen.tictac", appContext.getPackageName());
     }
 }

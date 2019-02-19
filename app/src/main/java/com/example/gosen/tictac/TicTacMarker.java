@@ -1,4 +1,4 @@
-package com.example.gosen.connect4_2;
+package com.example.gosen.tictac;
 
 import android.support.annotation.NonNull;
 
@@ -7,12 +7,13 @@ import java.io.Serializable;
 /**
  * A Tile in a sliding tiles puzzle.
  */
-public class Marker implements Comparable<Marker>, Serializable {
+public class TicTacMarker implements Comparable<TicTacMarker>, Serializable {
 
     /**
      * The background id to find the tile image.
      */
     private int background;
+    private int backgroundid;
     private int row;
     private int column;
     /**
@@ -25,13 +26,22 @@ public class Marker implements Comparable<Marker>, Serializable {
      *
      * @return the background id
      */
-    public int getBackground() {
-        return background;
+    public int getBackgroundId() {
+        return backgroundid;
     }
 
-    public void setBackground(int background) {
-        //this.background = background;
-        switch (background) {
+    /**
+     * Return the background.
+     *
+     * @return the background
+     */
+    public int getBackground() {
+        return this.background;
+    }
+
+    public void setBackground(int backgroundid) {
+        this.backgroundid = backgroundid;
+        switch (this.backgroundid) {
             case 0:
                 this.background = R.drawable.blank_marker;
                 break;
@@ -57,14 +67,22 @@ public class Marker implements Comparable<Marker>, Serializable {
     }
 
     /**
+     * set the tile id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * A Tile with id and background. The background may not have a corresponding image.
      *
      * @param id         the id
-     * @param background the background
+     * @param backgroundid the background
      */
-    Marker(int id, int background) {
+    TicTacMarker(int id, int backgroundid) {
         this.id = id;
-        this.background = background;
+        this.backgroundid = backgroundid;
+        this.setBackground(this.backgroundid);
     }
 
     /**
@@ -72,15 +90,15 @@ public class Marker implements Comparable<Marker>, Serializable {
      *
      * @param backgroundId The background id the Actual Id - 1.
      */
-    Marker(int row, int column, int backgroundId) {
+    TicTacMarker(int row, int column, int backgroundId) {
         this.row = row;
         this.column = column;
-        this.id = backgroundId;
+        this.backgroundid = backgroundId;
         setBackground(backgroundId);
     }
 
     @Override
-    public int compareTo(@NonNull Marker o) {
+    public int compareTo(@NonNull TicTacMarker o) {
         return o.id - this.id;
     }
 }
